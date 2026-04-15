@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin | Contador da Helo</title>
+    <meta
+      name="description"
+      content="Painel administrativo local para atualizar o contador da Helo."
+    />
+    <link rel="stylesheet" href="../styles.css" />
+    <script src="../scripts/counter-store.js" defer></script>
+    <script src="../scripts/admin-page.js" defer></script>
+  </head>
+  <body class="admin-shell">
+    <main class="page-shell">
+      <section class="admin-card" aria-labelledby="admin-title">
+        <a class="pill-link" href="../index.html">Voltar para a pagina principal</a>
+
+        <p class="admin-card__eyebrow">Painel da Helo</p>
+        <h1 id="admin-title" class="admin-card__title">Atualize o contador com facilidade</h1>
+        <p class="admin-card__subtitle">
+          Use os botoes abaixo para ajustar o numero de posts de aniversario de um
+          jeito rapido e organizado.
+        </p>
+
+        <div class="admin-status">
+          <span class="admin-status__label">Contagem atual</span>
+          <strong id="admin-counter-value" class="admin-status__value">0</strong>
+        </div>
+
+        <div class="admin-actions">
+          <button id="increment-button" class="button button--primary" type="button">
+            Somar +1
+          </button>
+          <button id="decrement-button" class="button button--secondary" type="button">
+            Tirar -1
+          </button>
+          <button id="reset-button" class="button button--ghost" type="button">
+            Zerar
+          </button>
+        </div>
+
+        <form id="manual-form" class="manual-form">
+          <label class="manual-form__label" for="manual-value">Definir valor manualmente</label>
+          <div class="manual-form__controls">
+            <input
+              id="manual-value"
+              class="manual-form__input"
+              name="manual-value"
+              type="number"
+              min="0"
+              step="1"
+              inputmode="numeric"
+              value="0"
+            />
+            <button class="button button--primary" type="submit">Aplicar</button>
+          </div>
+          <p id="manual-feedback" class="manual-form__feedback" aria-live="polite"></p>
+        </form>
+      </section>
+    </main>
+  </body>
+</html>

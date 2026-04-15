@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contador da Helo</title>
+    <meta
+      name="description"
+      content="Painel publico com a contagem dos posts de aniversario da Helo."
+    />
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="./scripts/counter-store.js" defer></script>
+    <script src="./scripts/public-page.js" defer></script>
+  </head>
+  <body class="public-shell">
+    <main class="page-shell">
+      <section class="hero-card" aria-labelledby="page-title">
+        <div class="hero-card__spark hero-card__spark--left" aria-hidden="true"></div>
+        <div class="hero-card__spark hero-card__spark--right" aria-hidden="true"></div>
+
+        <div class="hero-card__grid">
+          <div class="hero-card__content">
+            <p class="hero-card__eyebrow">Especial de aniversario</p>
+            <h1 id="page-title" class="hero-card__title">
+              <span class="hero-card__title-line">Contagem dos posts de</span><br />
+              <span class="hero-card__title-line">aniversario da Helo?</span>
+            </h1>
+          </div>
+
+          <div class="hero-card__showcase">
+            <div class="photo-card" aria-label="Foto da Helo">
+              <div class="photo-card__frame">
+                <img class="photo-card__image" src="./HELO.jpg" alt="Foto da Helo" />
+              </div>
+              <div class="photo-card__caption">
+                <span class="photo-card__tag">Nossa diva</span>
+                <p class="photo-card__text">Maravilhosa.</p>
+              </div>
+            </div>
+
+            <div class="counter-badge" aria-live="polite" aria-atomic="true">
+              <span class="counter-badge__label">Total atual</span>
+              <strong id="counter-value" class="counter-badge__value">0</strong>
+              <p class="counter-badge__text">
+                A cada post dela o contador sera aumentado.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
