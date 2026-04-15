@@ -241,6 +241,14 @@ a {
   line-height: 1.7;
 }
 
+.counter-badge__status,
+.admin-card__warning {
+  margin: 0.85rem 0 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
 .photo-card {
   position: relative;
   z-index: 1;
@@ -348,6 +356,12 @@ a {
 
 .button:active {
   transform: translateY(0);
+}
+
+.button:disabled,
+.manual-form__input:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
 }
 
 .button--primary {

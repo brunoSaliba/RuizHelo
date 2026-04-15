@@ -9,6 +9,7 @@
       content="Painel publico com a contagem dos posts de aniversario da Helo."
     />
     <link rel="stylesheet" href="./styles.css" />
+    <script src="./scripts/counter-config.js" defer></script>
     <script src="./scripts/counter-store.js" defer></script>
     <script src="./scripts/public-page.js" defer></script>
   </head>
@@ -44,6 +45,7 @@
               <p class="counter-badge__text">
                 A cada post dela o contador sera aumentado.
               </p>
+              <p id="counter-status" class="counter-badge__status" aria-live="polite"></p>
             </div>
           </div>
         </div>

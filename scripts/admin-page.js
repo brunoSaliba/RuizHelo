@@ -7,14 +7,8 @@ const decrementButton = document.querySelector("#decrement-button");
 const resetButton = document.querySelector("#reset-button");
 const counterStore = window.CounterStore;
 
-function render(value) {
-  if (counterValue) {
-    counterValue.textContent = String(value);
-  }
-
-  if (manualInput) {
-    manualInput.value = String(value);
-  }
+function getActionButtons() {
+  return [incrementButton, decrementButton, resetButton].filter(Boolean);
 }
 
 function setFeedback(message) {
@@ -25,61 +19,94 @@ function setFeedback(message) {
   feedback.textContent = message;
 }
 
+function render(snapshot) {
+  if (counterValue) {
+    counterValue.textContent = snapshot.isLoading ? "..." : String(snapshot.value);
+  }
+
+  if (manualInput && !snapshot.isSyncing) {
+    manualInput.value = String(snapshot.value);
+  }
+
+  getActionButtons().forEach((button) => {
+    button.disabled = snapshot.isSyncing || !snapshot.isConfigured;
+  });
+
+  if (manualInput) {
+    manualInput.disabled = snapshot.isSyncing || !snapshot.isConfigured;
+  }
+
+  if (!snapshot.isConfigured) {
+    setFeedback("Preencha scripts/counter-config.js com os dados do Supabase.");
+    return;
+  }
+
+  if (snapshot.error) {
+    setFeedback(snapshot.error);
+    return;
+  }
+
+  if (snapshot.isSyncing) {
+    setFeedback("Sincronizando alteracao global...");
+  }
+}
+
+async function runAction(action, successMessage) {
+  if (!counterStore) {
+    return;
+  }
+
+  try {
+    const nextValue = await action();
+    setFeedback(successMessage(nextValue));
+  } catch {
+    // The store already exposes the error message to the UI.
+  }
+}
+
 if (incrementButton) {
   incrementButton.addEventListener("click", () => {
-    if (!counterStore) {
-      return;
-    }
-
-    const nextValue = counterStore.incrementCounter();
-    setFeedback(`Valor atualizado para ${nextValue}.`);
+    runAction(() => counterStore.incrementCounter(), (nextValue) => `Valor global atualizado para ${nextValue}.`);
   });
 }
 
 if (decrementButton) {
-  decrementButton.addEventListener("click", () => {
+  decrementButton.addEventListener("click", async () => {
     if (!counterStore) {
       return;
     }
 
-    const previousValue = counterStore.getCounter();
-    const nextValue = counterStore.decrementCounter();
+    const currentValue = counterStore.getSnapshot().value;
 
-    if (previousValue === 0 && nextValue === 0) {
-      setFeedback("O contador ja esta em 0.");
-      return;
-    }
-
-    setFeedback(`Valor atualizado para ${nextValue}.`);
+    await runAction(
+      () => counterStore.decrementCounter(),
+      (nextValue) =>
+        currentValue === 0 && nextValue === 0
+          ? "O contador global ja esta em 0."
+          : `Valor global atualizado para ${nextValue}.`,
+    );
   });
 }
 
 if (resetButton) {
   resetButton.addEventListener("click", () => {
-    if (!counterStore) {
-      return;
-    }
-
-    counterStore.resetCounter();
-    setFeedback("Contador zerado.");
+    runAction(() => counterStore.resetCounter(), () => "Contador global zerado.");
   });
 }
 
 if (manualForm && manualInput) {
   manualForm.addEventListener("submit", (event) => {
     event.preventDefault();
-    if (!counterStore) {
-      return;
-    }
 
-    const nextValue = counterStore.setCounter(manualInput.value);
-    setFeedback(`Valor manual aplicado: ${nextValue}.`);
+    runAction(
+      () => counterStore.setCounter(manualInput.value),
+      (nextValue) => `Valor global aplicado: ${nextValue}.`,
+    );
   });
 }
 
 if (counterStore) {
-  render(counterStore.getCounter());
   counterStore.subscribe(render);
 } else {
-  setFeedback("Nao foi possivel iniciar o contador neste navegador.");
+  setFeedback("Nao foi possivel iniciar o contador global neste navegador.");
 }

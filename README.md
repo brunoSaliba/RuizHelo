@@ -1,25 +1,34 @@
 # Site Helo
 
-Site estatico pronto para publicar no GitHub Pages.
+Site estatico pronto para publicar no GitHub Pages com contador global via Supabase.
 
 ## Como publicar
 
-1. Crie um repositorio no GitHub.
-2. Envie estes arquivos para a branch `main`.
-3. No GitHub, abra `Settings` > `Pages`.
-4. Em `Build and deployment`, selecione `GitHub Actions`.
-5. Faça um novo push na branch `main` se o deploy nao iniciar sozinho.
-6. Aguarde o workflow `Deploy to GitHub Pages` terminar.
+1. Envie estes arquivos para a branch `main`.
+2. No GitHub, abra `Settings` > `Pages`.
+3. Em `Build and deployment`, selecione `GitHub Actions`.
+4. Aguarde o workflow `Deploy to GitHub Pages` terminar.
+
+## Como ativar o contador global
+
+1. Crie um projeto no Supabase.
+2. Abra o SQL Editor e rode o arquivo [supabase/setup.sql](./supabase/setup.sql).
+3. Em `Project Settings` > `API`, copie:
+   - `Project URL`
+   - `anon public key`
+4. Edite [scripts/counter-config.js](./scripts/counter-config.js) com esses valores.
+5. Faca um novo push para a `main`.
 
 ## Estrutura
 
-- `index.html`: pagina principal
-- `admin/index.html`: painel oculto para ajustar o contador
-- `scripts/`: logica do contador
-- `styles.css`: visual do site
+- `index.html`: pagina publica com a contagem global
+- `admin/index.html`: painel para atualizar o contador global
+- `scripts/counter-config.js`: configuracao do Supabase
+- `scripts/counter-store.js`: sincronizacao com o backend
+- `supabase/setup.sql`: tabela, policies e funcoes SQL
 
-## Importante
+## Observacao importante
 
-O contador atual usa `localStorage`.
-Isso significa que, no GitHub Pages, cada navegador tera a propria contagem salva localmente.
-Se voce quiser um contador global de verdade para todos verem o mesmo numero, o proximo passo e ligar o site a um backend como Supabase ou Firebase.
+Este projeto continua sendo um site estatico. Isso quer dizer que o painel `admin` nao fica protegido de verdade apenas com HTML e JavaScript. O contador sera global, mas qualquer pessoa que descubra como a chamada de escrita funciona pode tentar alterar o valor.
+
+Se voce quiser, o proximo passo pode ser endurecer isso com autenticacao real ou um backend proprio para a parte administrativa.
